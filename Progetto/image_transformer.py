@@ -18,7 +18,7 @@ def threshold(img_name,keyval):
     result = cv2.imwrite(name, threshold)
     if result:
         print("File saved successfully.")
-    else
+    else:
         print("Error in saving file.")
     return name
 
@@ -33,7 +33,7 @@ def erosion(img_name, xKernel, yKernel, iterations_number):
     result = cv2.imwrite(name, erosion)
     if result:
         print("File saved successfully.")
-    else
+    else:
         print("Error in saving file.")
     return name
 
