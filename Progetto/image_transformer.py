@@ -1,4 +1,4 @@
-import cv2 as cv
+import cv2
 import numpy as np
 
 def threshold(img_name,keyval):
