@@ -3,7 +3,7 @@ import numpy as np
 
 def threshold(img_name,keyval):
     #name of the new image
-    name_split = image_name.split(".")
+    name_split = img_name.split(".")
     name = name_split[0] + "_bianco_e_nero." + name_split[1]
     #oldname_bianco_e_nero.format
     img = cv2.imread(img_name, 0)
@@ -24,7 +24,7 @@ def threshold(img_name,keyval):
 
 
 def erosion(img_name, xKernel, yKernel, iterations_number):
-    name_split = image_name.split(".")
+    name_split = img_name.split(".")
     name = name_split[0] + "_finito." + name_split[1]
     img = cv2.imread(img_name,0)
     kernel = np.ones((xKernel, yKernel),np.uint8)

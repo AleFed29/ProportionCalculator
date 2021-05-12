@@ -9,7 +9,7 @@ def table(frame, data):
             #Entry = single line text box
             e = tk.Entry(frame, width=20, fg='blue', font=('Arial',16,'bold'))
             e.grid(row=i, column=j)
-            e.insert(END, data[j][i])#data at the END of the previous data in the entry widget
+            e.insert(1, data[j][i])#data at the END of the previous data in the entry widget (END, data)
             
 
 def createForm(img_name, width, height, XPOS, YPOS, data):

@@ -14,7 +14,7 @@ data_fake = [
 
 def Process(img_name, width, height, XPOS, YPOS):
     #fill with functions from ProportionCalculator
-    return true
+    return True
 
 if __name__ == "__main__":
     createForm("Gioconda.jpg", width, height, XPOS, YPOS, data_fake)
