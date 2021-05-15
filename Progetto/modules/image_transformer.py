@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+
 def threshold(img_name,keyval):
     #name of the new image
     name_split = img_name.split(".")
@@ -9,13 +10,13 @@ def threshold(img_name,keyval):
     img = cv2.imread(img_name, 0)
 
     #black if color Average of RGB values < keyval else white
-    ret, treshold = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)
-    
+    #treshold_img = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)[1] #ret, threshold = ... 
+    treshold_img = np.array(cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)[1])
     #cv2.imshow('original', img)
     #cv2.imshow('B&W', threshold)
     #cv2.waitkey(0)
     #cv2.destroyAllWindows()
-    result = cv2.imwrite(name, threshold)
+    result = cv2.imwrite(name, threshold_img)
     if result:
         print("File saved successfully.")
     else:
@@ -37,4 +38,5 @@ def erosion(img_name, xKernel, yKernel, iterations_number):
         print("Error in saving file.")
     return name
 
-
+def ThresholdedPictureName(img_name, keyval,xKernel, yKernel, iterations_number):
+    return erosion(threshold(img_name, keyval),xKernel, yKernel, iterations_number) 
