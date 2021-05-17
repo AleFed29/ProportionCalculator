@@ -2,9 +2,9 @@ import os
 from modules.proportion_calculator import *
 from modules.frontend_interface import *
 
-Gioconda = "../assets/Gioconda.jpg"
-SalvatorMundi = "../assets/SalvatorMundi.jpg"
-DamaconErmellino = "../assets/DamaConErmellino.jpg"
+Gioconda = "./assets/Gioconda.jpg"
+SalvatorMundi = "./assets/SalvatorMundi.jpg"
+DamaconErmellino = "./assets/DamaConErmellino.jpg"
 width = 500
 height = 500
 XPOS = 200
@@ -24,10 +24,10 @@ data_DamaconErmellino = CreateTableData(DamaconErmellino)
 #    return True
 
 if __name__ == "__main__":
-    modules.frontend_interface.createForm(Gioconda, width, height, XPOS, YPOS, data_fake)
-    modules.frontend_interface.createForm(Gioconda, width, height, XPOS, YPOS, data_Gioconda) #then try to call data table creation in createForm, using less parameters
-    modules.frontend_interface.createForm(SalvatorMundi, width, height, XPOS, YPOS, data_SalvatorMundi)
-    modules.frontend_interface.createForm(DamaconErmellino, width, height, XPOS, YPOS, data_DamaconErmellino)
+    createForm(Gioconda, width, height, XPOS, YPOS, data_fake)
+    createForm(Gioconda, width, height, XPOS, YPOS, data_Gioconda) #then try to call data table creation in createForm, using less parameters
+    createForm(SalvatorMundi, width, height, XPOS, YPOS, data_SalvatorMundi)
+    createForm(DamaconErmellino, width, height, XPOS, YPOS, data_DamaconErmellino)
     #call threshold and erosion 
     #Process("Gioconda.jpg",width, height, XPOS, YPOS, data_fake)
     #Process("SalvatorMundi.jpg",width, height, XPOS, YPOS, data_fake)
