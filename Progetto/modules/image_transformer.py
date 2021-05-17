@@ -11,7 +11,10 @@ def threshold(img_name,keyval):
 
     #black if color Average of RGB values < keyval else white
     #treshold_img = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)[1] #ret, threshold = ... 
-    treshold_img = np.array(cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)[1])
+    ret, threshold_img = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)
+    #treshold_img = np.array(cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)[1])
+    threshold_img = np.array(threshold_img)
+
     #cv2.imshow('original', img)
     #cv2.imshow('B&W', threshold)
     #cv2.waitkey(0)
