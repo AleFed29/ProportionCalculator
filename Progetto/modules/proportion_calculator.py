@@ -213,11 +213,7 @@ def derIVMax(f):
         intIVprev = intIVsucc
     return max
 
-def CreateTableData(img_name):
-    KEYVAL = 0
-    xKERNEL = 0
-    yKERNEL = 0
-    ITERATIONS_NUMBER=0
+def CreateTableData(img_name,KEYVAL, xKERNEL, yKERNEL, ITERATIONS_NUMBER):
     FUNCTION_1, FUNCTION_2 = FunctionsFromArea(img_name, KEYVAL, xKERNEL, yKERNEL, ITERATIONS_NUMBER) #method to have the function
     err = 0.01
     time_s = datetime()
