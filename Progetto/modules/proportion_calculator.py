@@ -17,8 +17,8 @@ def isblack(pixelRGB):
     return pixelRGB[0] == 0 and pixelRGB[1] == 0 and pixelRGB[2] == 0
    
 
-def FunctionsFromArea(img_name, keyval,xKernel, yKernel, iterations_number):
-    img = cv.imread(transformer.ThresholdedPictureName(img_name, keyval,xKernel, yKernel, iterations_number))
+def FunctionsFromArea(img_name, keyval):
+    img = cv.imread(str(transformer.ThresholdedPictureName(img_name, keyval)), 0)
     # get dimensions of image
     dimensions = img.shape
     # height, width, number of channels in image
@@ -31,25 +31,27 @@ def FunctionsFromArea(img_name, keyval,xKernel, yKernel, iterations_number):
 def SxFunc(img, ystart, width): #function on the left
     function_sx = dict()
     while ystart > 0:
-        xstart = int(width/2)
+        xstart = int(width)
         color = img[xstart, ystart]
-        while not isblack(color):
+        while not iswhite(color):
             xstart = xstart-1
             color = img[xstart, ystart]
-        function_sx[ystart] = int(width/2) - xstart #ribaltato
+        function_sx[ystart] = xstart - int(width/2)  #ribaltato
         ystart = ystart - 1
+        if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
     return function_sx    
 
 def DxFunc(img, ystart, width): #function on the left
     function_dx = dict()
     while ystart > 0:
-        xstart = int(width/2)
+        xstart = int(width)
         color = img[xstart, ystart]
         while not isblack(color):
             xstart = xstart + 1
             color = img[xstart, ystart]
         function_dx[ystart] = int(width/2) - xstart #ribaltato
         ystart = ystart - 1
+        if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
     return function_dx
 
 def GetValueFrom(x, dictionary):
@@ -213,8 +215,17 @@ def derIVMax(f):
         intIVprev = intIVsucc
     return max
 
-def CreateTableData(img_name,KEYVAL, xKERNEL, yKERNEL, ITERATIONS_NUMBER):
-    FUNCTION_1, FUNCTION_2 = FunctionsFromArea(img_name, KEYVAL, xKERNEL, yKERNEL, ITERATIONS_NUMBER) #method to have the function
+def CreateTableData(img_name,KEYVAL):
+    FUNCTION_1, FUNCTION_2 = FunctionsFromArea(img_name, KEYVAL) #method to have the function
+    
+    img = cv.imread(img_name,1)
+    # get dimensions of image
+    dimensions = img.shape
+    # height, width, number of channels in image
+    height = dimensions[0]
+    width = dimensions[1]
+    area = height*width
+
     err = 0.01
     time_s = datetime()
     A1 = TestRectangles(FUNCTION_1,err)
@@ -232,10 +243,10 @@ def CreateTableData(img_name,KEYVAL, xKERNEL, yKERNEL, ITERATIONS_NUMBER):
     parabolas = [A1[0] + A2[0], (A1[1]+A2[1])/2]
     time_par = time_s - datetime() 
     return [
-        ["N", "Value", "err", "time", "coeff.time-err"],
-        [1, rectangles[0], rectangles[1], time_rect, time_rect*rectangles[1]],
-        [2, trapezoids[0], trapezoids[1], time_trap, time_trap*trapezoids[1]],
-        [3, parabolas[0], parabolas[1], time_par, time_par*parabolas[1]]
+        ["N", "Value", "err","proportion(%)", "time", "coeff.time-err"],
+        [1, rectangles[0], rectangles[1],round(rectangles[0]*100/area,2), time_rect, time_rect*rectangles[1]],
+        [2, trapezoids[0], trapezoids[1],round(trapezoids[0]*100/area,2), time_trap, time_trap*trapezoids[1]],
+        [3, parabolas[0], parabolas[1],round(parabolas[0]*100/area,2), time_par, time_par*parabolas[1]]
     ]
     #it takes the function -> three methods, data collected with datetime
 

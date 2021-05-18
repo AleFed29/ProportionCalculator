@@ -15,13 +15,21 @@ data_fake = [
     [1, 'Gioconda', 0.055, 0.070, 0.089, 0.006, 0.03, 0.001, 0.04,0.02, 0.01, 0.09, 0.05, 0.06] #tuples with data
     ] 
 #image transforming and collecting data
-xkernel = 3
-ykernel = 3
+#xkernel = 3
+#ykernel = 3#
 iterations_number = 5
-data_SalvatorMundi = CreateTableData(SalvatorMundi, 20, xkernel, ykernel, iterations_number)
-data_Gioconda = CreateTableData(Gioconda, 150, xkernel, ykernel, iterations_number)
 
-data_DamaconErmellino = CreateTableData(DamaconErmellino, 5, xkernel, ykernel, iterations_number)
+data_SalvatorMundi = CreateTableData(SalvatorMundi, 20)
+
+data_DamaconErmellino = CreateTableData(DamaconErmellino, 30)
+
+data_Gioconda = CreateTableData(Gioconda, 90)
+
+
+
+
+
+
 
 #def Process(img_name, width, height, XPOS, YPOS):
     #fill with functions from ProportionCalculator
