@@ -31,6 +31,10 @@ data_Gioconda = CreateTableData(Gioconda, 90)
 
 
 
+
+
+
+
 #def Process(img_name, width, height, XPOS, YPOS):
     #fill with functions from ProportionCalculator
 #    return True

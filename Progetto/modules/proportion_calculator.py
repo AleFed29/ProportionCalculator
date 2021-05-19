@@ -22,8 +22,8 @@ def FunctionsFromArea(img_name, keyval):
     # get dimensions of image
     dimensions = img.shape
     # height, width, number of channels in image
-    height = dimensions[0]
-    img_width = dimensions[1]
+    height = dimensions[1]-1
+    img_width = dimensions[0]-1
     sxfunc = SxFunc(img, ystart=height, width=img_width)
     dxfunc = DxFunc(img, ystart=height, width=img_width)
     return sxfunc, dxfunc
@@ -31,7 +31,7 @@ def FunctionsFromArea(img_name, keyval):
 def SxFunc(img, ystart, width): #function on the left
     function_sx = dict()
     while ystart > 0:
-        xstart = int(width)
+        xstart = int(width) #se non dimezzi, sembra non funzionare
         color = img[xstart, ystart]
         while not iswhite(color):
             xstart = xstart-1
@@ -48,7 +48,7 @@ def DxFunc(img, ystart, width): #function on the left
         color = img[xstart, ystart]
         while not isblack(color):
             xstart = xstart + 1
-            color = img[xstart, ystart]
+            color = img[xstart/2, ystart/2]
         function_dx[ystart] = int(width/2) - xstart #ribaltato
         ystart = ystart - 1
         if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
@@ -222,9 +222,7 @@ def CreateTableData(img_name,KEYVAL):
     # get dimensions of image
     dimensions = img.shape
     # height, width, number of channels in image
-    height = dimensions[0]
-    width = dimensions[1]
-    area = height*width
+    area = img.size
 
     err = 0.01
     time_s = datetime()
