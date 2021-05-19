@@ -19,11 +19,14 @@ data_fake = [
 #ykernel = 3#
 iterations_number = 5
 
+
+
 data_SalvatorMundi = CreateTableData(SalvatorMundi, 20)
 
 data_DamaconErmellino = CreateTableData(DamaconErmellino, 30)
 
 data_Gioconda = CreateTableData(Gioconda, 90)
+
 
 
 

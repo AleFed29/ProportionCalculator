@@ -13,7 +13,6 @@ def threshold(img_name,keyval):
     img = cv2.imread(img_name, 0) #0 grayscale, 1 coloured, -1 unchanged
     cv2.imshow("prov", img)
     mainname = begin.split('/')[2]
-    print(name)
     if mainname == "SalvatorMundi":
         #black if color Average of RGB values < keyval else white
         ret, threshold_img = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)

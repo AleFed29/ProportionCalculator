@@ -11,10 +11,12 @@ global ITERATIONS_NUMBER
 
 #creates the image with the name composed by the methods, then it returns the name
 def iswhite(pixelRGB):
-    return pixelRGB[0] == 255 and pixelRGB[1] == 255 and pixelRGB[2] == 255 
+    return(pixelRGB == 255)
+    #return int(pixelRGB[0]) == 255 and int(pixelRGB[1]) == 255 and int(pixelRGB[2]) == 255
 
 def isblack(pixelRGB):
-    return pixelRGB[0] == 0 and pixelRGB[1] == 0 and pixelRGB[2] == 0
+    return pixelRGB == 0
+    #return pixelRGB[0] == 0 and pixelRGB[1] == 0 and pixelRGB[2] == 0
    
 
 def FunctionsFromArea(img_name, keyval):
@@ -23,36 +25,53 @@ def FunctionsFromArea(img_name, keyval):
     dimensions = img.shape
     # height, width, number of channels in image
     height = dimensions[1]-1
-    img_width = dimensions[0]-1
+    img_width = dimensions[0]-1 #it would be reversed
     sxfunc = SxFunc(img, ystart=height, width=img_width)
     dxfunc = DxFunc(img, ystart=height, width=img_width)
     return sxfunc, dxfunc
 
-def SxFunc(img, ystart, width): #function on the left
-    function_sx = dict()
+def DxFunc(img, ystart, width):
+    function_dx = dict()
+    height = ystart + 1
+    xstart = width
+    white = int(img[int(width - 1) ,int(2*height/3)])
+    for k in range(width):
+        for s in range(height):
+            print(img[k,s])
+    print(white)
+    while ystart > 0 and xstart > int(width/2): 
+        while int(img[xstart, ystart]) > white: #va fatto un for da xstart a width/2, non c'è altro modo
+            xstart = xstart - 1
+        function_dx[ystart] = xstart
+#def DxFunc(img, ystart, width): #function on the right
+    function_dx = dict()
+    xstart = int(width)
+    height = ystart + 1 
+    color = img[xstart, ystart]
     while ystart > 0:
-        xstart = int(width) #se non dimezzi, sembra non funzionare
-        color = img[xstart, ystart]
-        while not iswhite(color):
+        while True:
+            if not iswhite(color) or (abs(xstart) < width): break
             xstart = xstart-1
             color = img[xstart, ystart]
-        function_sx[ystart] = xstart - int(width/2)  #ribaltato
+        function_dx[abs(ystart - height)] = abs(xstart - int(width/2))  #ribaltato
         ystart = ystart - 1
         if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
-    return function_sx    
+    return function_dx    
 
-def DxFunc(img, ystart, width): #function on the left
-    function_dx = dict()
+def SxFunc(img, ystart, width): #function on the left
+    function_sx = dict()
+    height = ystart + 1
     while ystart > 0:
-        xstart = int(width)
+        xstart = 0 #
         color = img[xstart, ystart]
-        while not isblack(color):
+        while True:
+            if not iswhite(color) or (abs(xstart) < width): break
             xstart = xstart + 1
-            color = img[xstart/2, ystart/2]
-        function_dx[ystart] = int(width/2) - xstart #ribaltato
-        ystart = ystart - 1
+            color = img[xstart, ystart]
+        function_sx[abs(ystart - height)] = abs(int(width/2) - xstart) #ribaltato
+        ystart = ystart - 1 
         if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
-    return function_dx
+    return function_sx
 
 def GetValueFrom(x, dictionary):
     return dictionary[x] if x in dictionary else None
@@ -224,22 +243,26 @@ def CreateTableData(img_name,KEYVAL):
     # height, width, number of channels in image
     area = img.size
 
+    for key in FUNCTION_1:
+        print(key, FUNCTION_1[key])
+    for key in FUNCTION_2:
+        print(key, FUNCTION_2[key])
     err = 0.01
-    time_s = datetime()
+    time_s = datetime.time()
     A1 = TestRectangles(FUNCTION_1,err)
     A2 = TestRectangles(FUNCTION_2,err)
     rectangles = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_rect = time_s - datetime() #it takes a little time, i don't consider it
-    time_s = datetime()
+    time_rect = time_s - datetime.time() #it takes a little time, i don't consider it
+    time_s = datetime.time()
     A1 = TestTrapezoids(FUNCTION_1,err)
     A2 = TestTrapezoids(FUNCTION_2,err)
     trapezoids = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_trap = time_s - datetime()
-    time_s = datetime()
+    time_trap = time_s - datetime.time()
+    time_s = datetime.time()
     A1 = TestParabolas(FUNCTION_1,err)
     A2 = TestParabolas(FUNCTION_2,err)
     parabolas = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_par = time_s - datetime() 
+    time_par = time_s - datetime.time() 
     return [
         ["N", "Value", "err","proportion(%)", "time", "coeff.time-err"],
         [1, rectangles[0], rectangles[1],round(rectangles[0]*100/area,2), time_rect, time_rect*rectangles[1]],
