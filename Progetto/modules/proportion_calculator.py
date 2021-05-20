@@ -30,19 +30,38 @@ def FunctionsFromArea(img_name, keyval):
     dxfunc = DxFunc(img, ystart=height, width=img_width)
     return sxfunc, dxfunc
 
-def DxFunc(img, ystart, width):
-    function_dx = dict()
-    height = ystart + 1
-    xstart = width
-    white = int(img[int(width - 1) ,int(2*height/3)])
-    for k in range(width):
-        for s in range(height):
-            print(img[k,s])
-    print(white)
-    while ystart > 0 and xstart > int(width/2): 
-        while int(img[xstart, ystart]) > white: #va fatto un for da xstart a width/2, non c'è altro modo
-            xstart = xstart - 1
-        function_dx[ystart] = xstart
+def DxFunc(img, ystart, width):#function on the right
+    function_dx = dict() #f
+    xstart = int(width/2)
+    x = ystart
+    for i in range(width/2):
+        while True:
+            y = xstart - i #y parte da width/2 e scende
+            xrel = abs(x-ystart) #xrel parte da 1 e va avanti
+            if img[y + width/2,x] > 0: #coord pixel, se il pixel è bianco (non nero, per sfumature)
+                break
+        function_dx[xrel] = y #f(xrel) = y
+        x = x - 1 #punto alla nuova x
+        y = xstart #ritorna su
+    return function_dx    
+
+def SxFunc(img, ystart, width):#function on the left
+    function_sx = dict() #f
+    xstart = 0
+    x = ystart #metti for per spostare le x
+    for i in range(width/2):
+        while True:
+            y = i #y parte da 0 e sale
+            xrel =  abs(x-ystart) #xrel parte da 1 e va avanti
+            yrel = abs(width/2 - y) #da width/2 a scendere, perché parti sempre dall'alto
+            if img[yrel,xrel] > 0: #coord pixel, se il pixel è bianco (non nero, per sfumature)
+                break
+        function_sx[xrel] = yrel #f(xrel) = yrel
+        x = x - 1
+            
+
+
+
 #def DxFunc(img, ystart, width): #function on the right
     function_dx = dict()
     xstart = int(width)
