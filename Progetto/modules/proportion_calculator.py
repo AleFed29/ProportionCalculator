@@ -37,20 +37,21 @@ def DxFunc(img, ystart, width):#function on the right
     xstart = int(width/2)
     x = abs(int(ystart)-1)
     lastvalue = 20
-    while lastvalue != 1: #quando non trova punti bianchi, la figura è finita
+    while lastvalue > 1: #quando non trova punti bianchi, la figura è finita
         for i in range(int(width/2)):
             y = abs(xstart - i) #y parte da width/2 e scende, x fissa 
             xrel = int(abs(ystart-x)) #xrel parte da 1 e va avanti dopo ogni ciclo for
             yrel = abs(y + int(width/2))
             #print(xrel, yrel)
             #yrel,x eppure a quanto pare l'asse 0 è l'altezza
-            if img[x,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
-                break
+            if(abs(x) < ystart and abs(yrel) < int(width/2)):
+                if img[x,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
+                    break
         function_dx[xrel] = y #f(xrel) = y
         lastvalue = y #ordinata dell'ultimo pixel bianco trovato
-        print(lastvalue)
         x = x - 1 #punto alla nuova x
         y = xstart #ritorna su
+         
     return function_dx    
 
 #immaginare l'immagine ruotata di 90 gradi verso destra
@@ -58,57 +59,25 @@ def SxFunc(img, ystart, width):#function on the left
     function_sx = dict() #f
     #xstart = 0
     x = abs(int(ystart) - 1) #metti for per spostare le x
-    lastvalue = 1
-    while lastvalue > 0: #quando non trova punti bianchi, la figura è finita
+    lastvalue = 20
+    while lastvalue > 1: #quando non trova punti bianchi, la figura è finita
         for i in range(int(width/2)):
             #y = i #y parte da 0 e sale, x fissa 
             xrel =  int(abs(x-ystart)) #xrel parte da 1 e va avanti dopo ogni ciclo for
             yrel = int(abs(width/2 - i)) #da width/2 a scendere, perché parti sempre dall'alto
             #yrel,xrel eppure a quanto pare l'asse 0 è l'altezza
-            if img[xrel,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
-                break
+            if(abs(x) < ystart and abs(yrel) < int(width/2)):
+                if img[xrel,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
+                    break
         function_sx[xrel] = yrel #f(xrel) = yrel
         lastvalue = yrel #ordinata dell'ultimo pixel bianco trovato
         x = x - 1
-        y = 0 #xstart
+        #y = 0 #xstart
     return function_sx
 
             
-
-
-
-#def DxFunc(img, ystart, width): #function on the right
-    #function_dx = dict()
-    #xstart = int(width)
-    #height = ystart + 1 
-    #color = img[xstart, ystart]
-    #while ystart > 0:
-    #    while True:
-    #        if not iswhite(color) or (abs(xstart) < width): break
-    #        xstart = xstart-1
-    #        color = img[xstart, ystart]
-    #    function_dx[abs(ystart - height)] = abs(xstart - int(width/2))  #ribaltato
-    #    ystart = ystart - 1
-    #    if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
-    #return function_dx    
-
-#def SxFunc(img, ystart, width): #function on the left
- #   function_sx = dict()
- #   height = ystart + 1
-  #  while ystart > 0:
-   #     xstart = 0 #
-    #    color = img[xstart, ystart]
-    #    while True:
-    #        if not iswhite(color) or (abs(xstart) < width): break
-    #        xstart = xstart + 1
-    #        color = img[xstart, ystart]
-    #    function_sx[abs(ystart - height)] = abs(int(width/2) - xstart) #ribaltato
-    #    ystart = ystart - 1 
-    #    if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
-    #return function_sx
-
 def GetValueFrom(x, dictionary):
-    return dictionary[x] if x in dictionary else None
+    return dictionary[x] if x in dictionary else 0
 
 #img_name = ThresholdedPictureName()
 def Xs(start, end, n):
@@ -158,8 +127,9 @@ def Parabolas(f, start, end, n):
     return h*sum/3, errmax 
 
 def TestRectangles(f,err):
-    kmin = f.keys()[0]
-    kmax = f.keys()[len(f.keys())-1] #they are already ordered
+    data_keys = list(f.keys())
+    kmin = data_keys[0]
+    kmax = data_keys[len(data_keys)-1] #they are already ordered
     i = 1
     J2 = Rectangles(f, kmin, kmax, i)
     while True:
@@ -172,8 +142,9 @@ def TestRectangles(f,err):
 
 
 def TestTrapezoids(f, err):
-    kmin = f.keys()[0]
-    kmax = f.keys()[len(f.keys())-1] #they are already ordered
+    data_keys = list(f.keys())
+    kmin = data_keys[0]
+    kmax = data_keys[len(data_keys)-1] #they are already ordered
     i = 1
     J2 = Trapezoids(f, kmin, kmax, i)
     while True:
@@ -185,8 +156,9 @@ def TestTrapezoids(f, err):
         i = 2*i  
 
 def TestParabolas(f,err):
-    kmin = f.keys()[0]
-    kmax = f.keys()[len(f.keys())-1] #they are already ordered
+    data_keys = list(f.keys())
+    kmin = data_keys[0]
+    kmax = data_keys[len(data_keys)-1] #they are already ordered
     i = 1 
     J2 = Parabolas(f, kmin, kmax, i)
     while True:
@@ -204,7 +176,7 @@ def derMax(f):
     for x in f:
         if x<1: continue
         ysucc = GetValueFrom(x,f) #f(1), f(2),...
-        if yprev != None and ysucc != None:
+        if yprev != 0 and ysucc != 0:
             yo = abs(ysucc - yprev) #|f'(x)|
             if max < yo:
                 max = yo
@@ -218,7 +190,7 @@ def derIIMax(f):
     for x in f:
         if x < 2: continue
         ysucc = GetValueFrom(x,f) #f(2), f(3), ...
-        if yprev != None and ysucc != None:
+        if yprev != 0 and ysucc != 0:
             intsucc = ysucc - yprev #f'(1), #f'(2)
             yo = abs(intsucc - intprev) #|f''(0)|, |f''(1)|, ...
             if max < yo:
@@ -233,12 +205,12 @@ def derIVMax(f):
     ys = GetValueFrom(0,f) #y start
     ym = GetValueFrom(1,f) #y in the middle
     yf = GetValueFrom(2,f) #y at the end
-    intIIprev = (yf-ym)-(ym - ys) if ys != None and ym != None and yf != None else 0 #f''(0)
+    intIIprev = (yf-ym)-(ym - ys)  #f''(0)
 
     ys = ym
     ym = yf
     yf = GetValueFrom(3,f)
-    intIIsucc = (yf-ym)-(ym - ys) if ys != None and ym != None and yf != None else 0 #f''(1) 
+    intIIsucc = (yf-ym)-(ym - ys)  #f''(1) 
     
     intIVprev = intIIsucc - intIIprev #f'''(0)
     intIIprev = intIIsucc
@@ -246,7 +218,7 @@ def derIVMax(f):
     ys = ym
     ym = yf
     yf = GetValueFrom(4,f)
-    intIIsucc = (yf-ym)-(ym - ys) if ys != None and ym != None and yf != None else 0 #f''(2)
+    intIIsucc = (yf-ym)-(ym - ys) #f''(2)
 
     intIVsucc = intIIsucc - intIIprev #f'''(1)
     max = abs(intIVsucc - intIVprev) #|f(IV)(0)|
@@ -258,7 +230,7 @@ def derIVMax(f):
         ys = GetValueFrom(x,f) #y start
         ym = GetValueFrom(x+1,f) #y in the middle
         yf = GetValueFrom(x+2,f) #y at the end
-        if ys != None and ym != None and yf != None: continue
+        if ys != 0 and ym != 0 and yf != 0: continue
         intIIsucc = (yf-ym)-(ym - ys) #f''(3), f''(4),...
         intIVsucc = intIIsucc - intIIprev #f'''(2)
         yo = abs(intIVsucc - intIVprev)#|f(IV)(1)|
@@ -281,22 +253,26 @@ def CreateTableData(img_name,KEYVAL):
         print(key, FUNCTION_1[key])
     for key in FUNCTION_2:
         print(key, FUNCTION_2[key])
-    err = 0.01
-    time_s = datetime.time()
+
+    err = 0.01 #max error
+
+    time_s = datetime.datetime().now()
     A1 = TestRectangles(FUNCTION_1,err)
     A2 = TestRectangles(FUNCTION_2,err)
     rectangles = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_rect = time_s - datetime.time() #it takes a little time, i don't consider it
-    time_s = datetime.time()
+    time_rect = (datetime.datetime().now() - time_s)/1000  #it takes a little time, i don't consider it
+
+    time_s = datetime.datetime().now()# boh. function missing required argument 'year' (pos 1
     A1 = TestTrapezoids(FUNCTION_1,err)
     A2 = TestTrapezoids(FUNCTION_2,err)
     trapezoids = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_trap = time_s - datetime.time()
-    time_s = datetime.time()
+    time_trap = (datetime.datetime().now() - time_s)/1000 #milliseconds, not microseconds
+
+    time_s = datetime.datetime().now()
     A1 = TestParabolas(FUNCTION_1,err)
     A2 = TestParabolas(FUNCTION_2,err)
     parabolas = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_par = time_s - datetime.time() 
+    time_par = (datetime.datetime().now() - time_s)/1000 
     return [
         ["N", "Value", "err","proportion(%)", "time", "coeff.time-err"],
         [1, rectangles[0], rectangles[1],round(rectangles[0]*100/area,2), time_rect, time_rect*rectangles[1]],
