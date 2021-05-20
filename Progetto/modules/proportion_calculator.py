@@ -24,73 +24,88 @@ def FunctionsFromArea(img_name, keyval):
     # get dimensions of image
     dimensions = img.shape
     # height, width, number of channels in image
-    height = dimensions[1]-1
-    img_width = dimensions[0]-1 #it would be reversed
-    sxfunc = SxFunc(img, ystart=height, width=img_width)
+    height = dimensions[0]-1
+    img_width = dimensions[1]-1 #it would be reversed
+    print(img_width,'x',height)
     dxfunc = DxFunc(img, ystart=height, width=img_width)
+    sxfunc = SxFunc(img, ystart=height, width=img_width)
     return sxfunc, dxfunc
 
+#immaginare l'immagine ruotata di 90 gradi verso sistra
 def DxFunc(img, ystart, width):#function on the right
     function_dx = dict() #f
     xstart = int(width/2)
-    x = ystart
-    for i in range(width/2):
-        while True:
-            y = xstart - i #y parte da width/2 e scende
-            xrel = abs(x-ystart) #xrel parte da 1 e va avanti
-            if img[y + width/2,x] > 0: #coord pixel, se il pixel è bianco (non nero, per sfumature)
+    x = abs(int(ystart)-1)
+    lastvalue = 20
+    while lastvalue != 1: #quando non trova punti bianchi, la figura è finita
+        for i in range(int(width/2)):
+            y = abs(xstart - i) #y parte da width/2 e scende, x fissa 
+            xrel = int(abs(ystart-x)) #xrel parte da 1 e va avanti dopo ogni ciclo for
+            yrel = abs(y + int(width/2))
+            #print(xrel, yrel)
+            #yrel,x eppure a quanto pare l'asse 0 è l'altezza
+            if img[x,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
                 break
         function_dx[xrel] = y #f(xrel) = y
+        lastvalue = y #ordinata dell'ultimo pixel bianco trovato
+        print(lastvalue)
         x = x - 1 #punto alla nuova x
         y = xstart #ritorna su
     return function_dx    
 
+#immaginare l'immagine ruotata di 90 gradi verso destra
 def SxFunc(img, ystart, width):#function on the left
     function_sx = dict() #f
-    xstart = 0
-    x = ystart #metti for per spostare le x
-    for i in range(width/2):
-        while True:
-            y = i #y parte da 0 e sale
-            xrel =  abs(x-ystart) #xrel parte da 1 e va avanti
-            yrel = abs(width/2 - y) #da width/2 a scendere, perché parti sempre dall'alto
-            if img[yrel,xrel] > 0: #coord pixel, se il pixel è bianco (non nero, per sfumature)
+    #xstart = 0
+    x = abs(int(ystart) - 1) #metti for per spostare le x
+    lastvalue = 1
+    while lastvalue > 0: #quando non trova punti bianchi, la figura è finita
+        for i in range(int(width/2)):
+            #y = i #y parte da 0 e sale, x fissa 
+            xrel =  int(abs(x-ystart)) #xrel parte da 1 e va avanti dopo ogni ciclo for
+            yrel = int(abs(width/2 - i)) #da width/2 a scendere, perché parti sempre dall'alto
+            #yrel,xrel eppure a quanto pare l'asse 0 è l'altezza
+            if img[xrel,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
                 break
         function_sx[xrel] = yrel #f(xrel) = yrel
+        lastvalue = yrel #ordinata dell'ultimo pixel bianco trovato
         x = x - 1
+        y = 0 #xstart
+    return function_sx
+
             
 
 
 
 #def DxFunc(img, ystart, width): #function on the right
-    function_dx = dict()
-    xstart = int(width)
-    height = ystart + 1 
-    color = img[xstart, ystart]
-    while ystart > 0:
-        while True:
-            if not iswhite(color) or (abs(xstart) < width): break
-            xstart = xstart-1
-            color = img[xstart, ystart]
-        function_dx[abs(ystart - height)] = abs(xstart - int(width/2))  #ribaltato
-        ystart = ystart - 1
-        if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
-    return function_dx    
+    #function_dx = dict()
+    #xstart = int(width)
+    #height = ystart + 1 
+    #color = img[xstart, ystart]
+    #while ystart > 0:
+    #    while True:
+    #        if not iswhite(color) or (abs(xstart) < width): break
+    #        xstart = xstart-1
+    #        color = img[xstart, ystart]
+    #    function_dx[abs(ystart - height)] = abs(xstart - int(width/2))  #ribaltato
+    #    ystart = ystart - 1
+    #    if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
+    #return function_dx    
 
-def SxFunc(img, ystart, width): #function on the left
-    function_sx = dict()
-    height = ystart + 1
-    while ystart > 0:
-        xstart = 0 #
-        color = img[xstart, ystart]
-        while True:
-            if not iswhite(color) or (abs(xstart) < width): break
-            xstart = xstart + 1
-            color = img[xstart, ystart]
-        function_sx[abs(ystart - height)] = abs(int(width/2) - xstart) #ribaltato
-        ystart = ystart - 1 
-        if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
-    return function_sx
+#def SxFunc(img, ystart, width): #function on the left
+ #   function_sx = dict()
+ #   height = ystart + 1
+  #  while ystart > 0:
+   #     xstart = 0 #
+    #    color = img[xstart, ystart]
+    #    while True:
+    #        if not iswhite(color) or (abs(xstart) < width): break
+    #        xstart = xstart + 1
+    #        color = img[xstart, ystart]
+    #    function_sx[abs(ystart - height)] = abs(int(width/2) - xstart) #ribaltato
+    #    ystart = ystart - 1 
+    #    if xstart == int(width/2): break #se la figura è terminata, per dama con ermellino che ha impurezze sopra la testa 
+    #return function_sx
 
 def GetValueFrom(x, dictionary):
     return dictionary[x] if x in dictionary else None
