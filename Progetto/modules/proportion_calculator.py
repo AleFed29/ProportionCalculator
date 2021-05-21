@@ -43,31 +43,34 @@ def DxFunc(img, ystart, width):#function on the right
             yrel = abs(y + int(width/2))
             #print(xrel, yrel)
             #yrel,x eppure a quanto pare l'asse 0 è l'altezza
-            if(abs(x) < ystart and abs(yrel) < int(width/2)) or len(list(function_dx.keys())) < 200:
+            if(abs(x) < ystart and abs(yrel) < int(width/2)):
                 if img[x,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
                     break
+        punti =  list(function_dx.keys())   
+        y = 2 if y < 2 and len(punti) < 500 else y  #se almeno 500 punti e un pixel arriva ad uno, allora esce.      
         function_dx[xrel] = y #f(xrel) = y
         lastvalue = y #ordinata dell'ultimo pixel bianco trovato
         x = x - 1 #punto alla nuova x
-        y = xstart #ritorna su
-         
+        y = xstart #ritorna su   
     return function_dx    
 
 #immaginare l'immagine ruotata di 90 gradi verso destra
 def SxFunc(img, ystart, width):#function on the left
     function_sx = dict() #f
     #xstart = 0
-    x = abs(int(ystart) - 1) #metti for per spostare le x
+    x = abs(int(ystart)) - 1 #metti for per spostare le x
     lastvalue = 20
     while lastvalue > 1: #quando non trova punti bianchi, la figura è finita
         for i in range(int(width/2)):
             #y = i #y parte da 0 e sale, x fissa 
-            xrel =  int(abs(x-ystart)) #xrel parte da 1 e va avanti dopo ogni ciclo for
+            xrel =  int(abs(abs(x)-abs(ystart))) #xrel parte da 1 e va avanti dopo ogni ciclo for
             yrel = int(abs(width/2 - i)) #da width/2 a scendere, perché parti sempre dall'alto
             #yrel,xrel eppure a quanto pare l'asse 0 è l'altezza
-            if (abs(x) < ystart and abs(yrel) < int(width/2)) or len(list(function_sx.keys())) < 200:
+            if (abs(x) < ystart and abs(yrel) < int(width/2)):
                 if img[xrel,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
-                    break
+                    break    
+        punti =  list(function_sx.keys())   
+        yrel = 2 if yrel < 2 and len(punti) < 500 else yrel  #se almeno 500 punti e un pixel arriva ad uno, allora esce. 
         function_sx[xrel] = yrel #f(xrel) = yrel
         lastvalue = yrel #ordinata dell'ultimo pixel bianco trovato
         x = x - 1
@@ -250,7 +253,8 @@ def CreateTableData(img_name,KEYVAL):
     # height, width, number of channels in image
     area = img.size
     
-    print(FUNCTION_1)
+    print(len(FUNCTION_1))
+    print(len(FUNCTION_2)) #capire perché funzione 1 ha più punti. Per il resto, ok tranne elaborazione.
     #for key in FUNCTION_1:
     #    print(key, FUNCTION_1[key])
     #for key in FUNCTION_2:
