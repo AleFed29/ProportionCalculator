@@ -13,21 +13,16 @@ def threshold(img_name,keyval):
     img = cv2.imread(img_name, 0) #0 grayscale, 1 coloured, -1 unchanged
     cv2.imshow("prov", img)
     mainname = begin.split('/')[2]
+
     if mainname == "SalvatorMundi":
         #black if color Average of RGB values < keyval else white
         ret, threshold_img = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)
         threshold_img  = cv2.erode(threshold_img , None, iterations=1)
-        #threshold_img  = cv2.GaussianBlur(threshold_img, (5,5),0)
 
-        #conviene?
-        #kernel = np.ones((5,5),np.uint8)
-        #threshold_img = cv2.morphologyEx(threshold_img, cv2.MORPH_GRADIENT,kernel)
-        #cv2.imshow("Prov2", threshold_img)
     elif mainname == "DamaConErmellino":
         ret, threshold_img = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)
         threshold_img  = cv2.erode(threshold_img , None, iterations=2)
-        #kernel = np.ones((5,5),np.uint8)
-        #threshold_img = cv2.morphologyEx(threshold_img, cv2.MORPH_GRADIENT,kernel)
+
     elif mainname == "Gioconda":
         ret, threshold_img = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY_INV)
         threshold_img  = cv2.erode(threshold_img , None, iterations=3)

@@ -43,7 +43,7 @@ def DxFunc(img, ystart, width):#function on the right
             yrel = abs(y + int(width/2))
             #print(xrel, yrel)
             #yrel,x eppure a quanto pare l'asse 0 è l'altezza
-            if(abs(x) < ystart and abs(yrel) < int(width/2)):
+            if(abs(x) < ystart and abs(yrel) < int(width/2)) or len(list(function_dx.keys())) < 200:
                 if img[x,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
                     break
         function_dx[xrel] = y #f(xrel) = y
@@ -65,13 +65,13 @@ def SxFunc(img, ystart, width):#function on the left
             xrel =  int(abs(x-ystart)) #xrel parte da 1 e va avanti dopo ogni ciclo for
             yrel = int(abs(width/2 - i)) #da width/2 a scendere, perché parti sempre dall'alto
             #yrel,xrel eppure a quanto pare l'asse 0 è l'altezza
-            if(abs(x) < ystart and abs(yrel) < int(width/2)):
+            if (abs(x) < ystart and abs(yrel) < int(width/2)) or len(list(function_sx.keys())) < 200:
                 if img[xrel,yrel] > 200: #coord pixel, se il pixel è bianco (non nero, per sfumature)
                     break
         function_sx[xrel] = yrel #f(xrel) = yrel
         lastvalue = yrel #ordinata dell'ultimo pixel bianco trovato
         x = x - 1
-        #y = 0 #xstart
+        #y = 0 #xstart   
     return function_sx
 
             
@@ -90,10 +90,12 @@ def Rectangles(f, start, end, n):
     sum = 0
     xs = Xs(start, end, n)
     for x in xs:
-        sum = sum + GetValueFrom(x,f)
+        y = GetValueFrom(x,f)
+        print(x, y)
+        sum = sum + y
     h = abs(end - start)/n
     errmax = derMax(f)*h*(end-start)/2
-    return h*sum, errmax
+    return [h*sum, errmax]
 
 def Trapezoids(f, start, end, n):
     sum = 0
@@ -107,7 +109,7 @@ def Trapezoids(f, start, end, n):
             sum = sum + 2 * GetValueFrom(x,f)
         i = i + 1
     errmax = derIIMax(f) * h*h*(end-start)/12        
-    return h*sum/2, errmax        
+    return [h*sum/2, errmax]        
 
 def Parabolas(f, start, end, n):
     sum = 0
@@ -123,7 +125,7 @@ def Parabolas(f, start, end, n):
             sum = sum + 4 * GetValueFrom(x,f)
         i = i + 1
         errmax = derIVMax(f)*(h**4)*(end-start)/2880
-    return h*sum/3, errmax 
+    return [h*sum/3, errmax] 
 
 def TestRectangles(f,err):
     data_keys = list(f.keys())
@@ -133,7 +135,7 @@ def TestRectangles(f,err):
     J2 = Rectangles(f, kmin, kmax, i)
     while True:
         J1 = Rectangles(f,kmin, kmax, 2*i)
-        diff = abs(J1[0] - J2[0])/15
+        diff = abs(float(J1[0]) - float(J2[0]))
         if diff < err:
             return J1
         J2 = J1
@@ -148,7 +150,7 @@ def TestTrapezoids(f, err):
     J2 = Trapezoids(f, kmin, kmax, i)
     while True:
         J1 = Trapezoids(f, kmin, kmax, 2*i)
-        diff = abs(J1[0] - J2[0])/15
+        diff = abs(float(J1[0]) - float(J2[0]))/3
         if diff < err:
             return J1
         J2 = J1
@@ -162,12 +164,12 @@ def TestParabolas(f,err):
     J2 = Parabolas(f, kmin, kmax, i)
     while True:
         J1 = Parabolas(f, kmin, kmax, 2*i)[0]
-        diff = abs(J1[0] - J2[0])/15
+        diff = abs(float(J1[0]) - float(J2[0]))/15
         if diff < err:
             return J1
         J2 = J1
         i = 2*i  
-            
+           
 
 def derMax(f):
     max = 0
@@ -244,39 +246,43 @@ def CreateTableData(img_name,KEYVAL):
     
     img = cv.imread(img_name,1)
     # get dimensions of image
-    dimensions = img.shape
+    #dimensions = img.shape
     # height, width, number of channels in image
     area = img.size
-
-    for key in FUNCTION_1:
-        print(key, FUNCTION_1[key])
-    for key in FUNCTION_2:
-        print(key, FUNCTION_2[key])
-
+    
+    print(FUNCTION_1)
+    #for key in FUNCTION_1:
+    #    print(key, FUNCTION_1[key])
+    #for key in FUNCTION_2:
+    #    print(key, FUNCTION_2[key])
+    return
     err = 0.01 #max error
-
-    time_s = datetime().now()
+    print("Inizio")
+    time_s = datetime.now()
     A1 = TestRectangles(FUNCTION_1,err)
+    print("lista", A1)
+    return
     A2 = TestRectangles(FUNCTION_2,err)
     rectangles = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_rect = (datetime().now() - time_s).microseconds/1000  #it takes a little time, i don't consider it
-
-    time_s = datetime().now()# boh. function missing required argument 'year' (pos 1
+    time_rect = (datetime.now() - time_s).microseconds/1000  #it takes a little time, i don't consider it
+    print("Rettangoli")
+    return
+    time_s = datetime.now()# boh. function missing required argument 'year' (pos 1
     A1 = TestTrapezoids(FUNCTION_1,err)
     A2 = TestTrapezoids(FUNCTION_2,err)
     trapezoids = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_trap = (datetime().now() - time_s).microseconds/1000 #milliseconds, not microseconds
+    time_trap = (datetime.now() - time_s).microseconds/1000 #milliseconds, not microseconds
 
-    time_s = datetime().now()
+    time_s = datetime.now()
     A1 = TestParabolas(FUNCTION_1,err)
     A2 = TestParabolas(FUNCTION_2,err)
     parabolas = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_par = (datetime().now() - time_s).microseconds/1000 
+    time_par = (datetime.now - time_s).microseconds/1000 
     return [
-        ["N", "Value", "err","proportion(%)", "time (ms)", "coeff.time-err"],
-        [1, rectangles[0], rectangles[1],round(rectangles[0]*100/area,2), time_rect, time_rect*rectangles[1]],
-        [2, trapezoids[0], trapezoids[1],round(trapezoids[0]*100/area,2), time_trap, time_trap*trapezoids[1]],
-        [3, parabolas[0], parabolas[1],round(parabolas[0]*100/area,2), time_par, time_par*parabolas[1]]
+        ["N","Method Name", "Value", "err","proportion(%)", "time (ms)", "coeff.time-err"],
+        [1, "Rectangles", rectangles[0], rectangles[1],round(rectangles[0]*100/area,2), time_rect, time_rect*rectangles[1]],
+        [2, "Trapezoids",trapezoids[0], trapezoids[1],round(trapezoids[0]*100/area,2), time_trap, time_trap*trapezoids[1]],
+        [3, "Parabolas",parabolas[0], parabolas[1],round(parabolas[0]*100/area,2), time_par, time_par*parabolas[1]]
     ]
     #it takes the function -> three methods, data collected with datetime
 
