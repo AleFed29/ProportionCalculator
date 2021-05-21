@@ -266,13 +266,13 @@ def CreateTableData(img_name,KEYVAL):
     A1 = TestTrapezoids(FUNCTION_1,err)
     A2 = TestTrapezoids(FUNCTION_2,err)
     trapezoids = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_trap = (datetime.datetime().now() - time_s)/1000 #milliseconds, not microseconds
+    time_trap = (datetime.datetime().now() - time_s).microseconds/1000 #milliseconds, not microseconds
 
     time_s = datetime.datetime().now()
     A1 = TestParabolas(FUNCTION_1,err)
     A2 = TestParabolas(FUNCTION_2,err)
     parabolas = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_par = (datetime.datetime().now() - time_s)/1000 
+    time_par = (datetime.datetime().now() - time_s).microseconds/1000 
     return [
         ["N", "Value", "err","proportion(%)", "time", "coeff.time-err"],
         [1, rectangles[0], rectangles[1],round(rectangles[0]*100/area,2), time_rect, time_rect*rectangles[1]],
