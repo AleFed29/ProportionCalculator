@@ -1,8 +1,7 @@
 import os
 import cv2 as cv
 import modules.image_transformer as transformer
-import datetime
-
+from datetime import datetime
 
 global KEYVAL
 global xKERNEL
@@ -256,25 +255,25 @@ def CreateTableData(img_name,KEYVAL):
 
     err = 0.01 #max error
 
-    time_s = datetime.datetime().now()
+    time_s = datetime().now()
     A1 = TestRectangles(FUNCTION_1,err)
     A2 = TestRectangles(FUNCTION_2,err)
     rectangles = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_rect = (datetime.datetime().now() - time_s)/1000  #it takes a little time, i don't consider it
+    time_rect = (datetime().now() - time_s).microseconds/1000  #it takes a little time, i don't consider it
 
-    time_s = datetime.datetime().now()# boh. function missing required argument 'year' (pos 1
+    time_s = datetime().now()# boh. function missing required argument 'year' (pos 1
     A1 = TestTrapezoids(FUNCTION_1,err)
     A2 = TestTrapezoids(FUNCTION_2,err)
     trapezoids = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_trap = (datetime.datetime().now() - time_s).microseconds/1000 #milliseconds, not microseconds
+    time_trap = (datetime().now() - time_s).microseconds/1000 #milliseconds, not microseconds
 
-    time_s = datetime.datetime().now()
+    time_s = datetime().now()
     A1 = TestParabolas(FUNCTION_1,err)
     A2 = TestParabolas(FUNCTION_2,err)
     parabolas = [A1[0] + A2[0], (A1[1]+A2[1])/2]
-    time_par = (datetime.datetime().now() - time_s).microseconds/1000 
+    time_par = (datetime().now() - time_s).microseconds/1000 
     return [
-        ["N", "Value", "err","proportion(%)", "time", "coeff.time-err"],
+        ["N", "Value", "err","proportion(%)", "time (ms)", "coeff.time-err"],
         [1, rectangles[0], rectangles[1],round(rectangles[0]*100/area,2), time_rect, time_rect*rectangles[1]],
         [2, trapezoids[0], trapezoids[1],round(trapezoids[0]*100/area,2), time_trap, time_trap*trapezoids[1]],
         [3, parabolas[0], parabolas[1],round(parabolas[0]*100/area,2), time_par, time_par*parabolas[1]]
