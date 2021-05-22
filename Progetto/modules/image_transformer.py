@@ -24,11 +24,16 @@ def threshold(img_name,keyval):
         threshold_img  = cv2.erode(threshold_img , None, iterations=2)
 
     elif mainname == "Gioconda":
-        ret, threshold_img = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY_INV)
-        threshold_img  = cv2.erode(threshold_img , None, iterations=3)
+        threshold_img = cv2.rectangle(img, (0,200), (100,600), (255,255,255), -1) #fill with a white rectangle to have good threshold
+        threshold_img = cv2.rectangle(threshold_img, (0,200), (200,450), (255,255,255), -1) #fill with a white rectangle to have good threshold
+        threshold_img = cv2.rectangle(threshold_img, (525,400), (680,450), (255,255,255), -1)
+        threshold_img = cv2.rectangle(threshold_img, (0,600), (50,500), (255,255,255), -1)
+        ret, threshold_img = cv2.threshold(threshold_img, keyval, 255, cv2.THRESH_BINARY)
         threshold_img = cv2.bitwise_not(threshold_img)
-        threshold_img  = cv2.erode(threshold_img , None, iterations=3)
-        threshold_img = cv2.bitwise_not(threshold_img)
+        #rectKernel = cv2.getStructuringElement(cv2.MORPH_RECT, (13, 5))
+        #threshold_img  = cv2.morphologyEx(threshold_img, cv2.MORPH_BLACKHAT, rectKernel)
+        #threshold_img = cv2.bitwise_not(threshold_img)
+        threshold_img  = cv2.erode(threshold_img , None, iterations=4)
     cv2.imshow(mainname,threshold_img)
     cv2.waitKey(0)
     result = cv2.imwrite(name, threshold_img)

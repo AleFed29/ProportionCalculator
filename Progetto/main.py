@@ -5,7 +5,7 @@ from modules.frontend_interface import *
 Gioconda = "./assets/Gioconda.jpg"
 SalvatorMundi = "./assets/SalvatorMundi.jpg"
 DamaconErmellino = "./assets/DamaConErmellino.jpg"
-width = 500
+width = 700
 height = 500
 XPOS = 200
 YPOS = 100
