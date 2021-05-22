@@ -9,27 +9,33 @@ width = 500
 height = 500
 XPOS = 200
 YPOS = 100
-data_fake = [
-    ['id', 'Picture','Rectangles', 'Trapezoids', 'Cavalieri-Simpson(Parabolas)', 'error_R', 'error_T', 'eror_P', 'time_R','time_T','time_P', 'time-quality-ratio_R',
-     'time-quality-ratio_T', 'time-quality-ratio_P'], #tuples with data
-    [1, 'Gioconda', 0.055, 0.070, 0.089, 0.006, 0.03, 0.001, 0.04,0.02, 0.01, 0.09, 0.05, 0.06] #tuples with data
-    ] 
-#image transforming and collecting data   
-data_Gioconda = CreateTableData(Gioconda)
-data_SalvatorMundi = CreateTableData(SalvatorMundi)
-data_DamaconErmellino = CreateTableData(DamaconErmellino)
+data_fake = [ 
+["N","Method Name", "Value", "err","proportion(%)", "time (ms)", "coeff.time-err"],
+[1, "Rectangles", 60.5, 0.04,60, 325, 13],
+[2, "Trapezoids",55.9, 0.01,56, 340, 3.4],
+[3, "Parabolas",55.7, 0.005,55.9, 1000, 5]
+]
+    
 
-#def Process(img_name, width, height, XPOS, YPOS):
-    #fill with functions from ProportionCalculator
-#    return True
 
 if __name__ == "__main__":
-    createForm(Gioconda, width, height, XPOS, YPOS, data_fake)
-    createForm(Gioconda, width, height, XPOS, YPOS, data_Gioconda) #then try to call data table creation in createForm, using less parameters
-    createForm(SalvatorMundi, width, height, XPOS, YPOS, data_SalvatorMundi)
-    createForm(DamaconErmellino, width, height, XPOS, YPOS, data_DamaconErmellino)
+    scelta = int(input("Inserire il quadro di cui si vuole avere la tabella: \n 1 - La Gioconda \n 2 - Salvator Mundi \n 3 - Dama con Ermellino\n Risposta: "))
+    if scelta == 1: 
+        data_Gioconda = CreateTableData(Gioconda, 90)
+        createForm(Gioconda, width, height, XPOS, YPOS, data_Gioconda)
+    elif scelta == 2: 
+        data_SalvatorMundi = CreateTableData(SalvatorMundi, 20)
+        createForm(SalvatorMundi, width, height, XPOS, YPOS, data_SalvatorMundi)
+    elif scelta == 3:
+        data_DamaconErmellino = CreateTableData(DamaconErmellino, 30)
+        createForm(DamaconErmellino, width, height, XPOS, YPOS, data_DamaconErmellino)
+    else:
+        print("Digitazione errata Data fake")
+        createForm(Gioconda, width, height, XPOS, YPOS, data_fake)
+     #then try to call data table creation in createForm, using less parameters
+    os.system("PAUSE")    
     #call threshold and erosion 
     #Process("Gioconda.jpg",width, height, XPOS, YPOS, data_fake)
     #Process("SalvatorMundi.jpg",width, height, XPOS, YPOS, data_fake)
     #Process("DamaConErmellino.jpg",width, height, XPOS, YPOS, data_fake)
-    os.system("PAUSE")
+    
