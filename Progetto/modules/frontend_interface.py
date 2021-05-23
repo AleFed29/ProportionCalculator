@@ -2,6 +2,7 @@ import tkinter
 import cv2 as cv
 from modules.proportion_calculator import *
 from modules.image_transformer import *
+from PIL import Image, ImageTk
 
 
 END = 1
@@ -18,9 +19,9 @@ def table(frame, data):
 
 def createForm(img_name, width, height, XPOS, YPOS, data):
     #getting the image
-    img_name = "." + img_name
-    print(img_name)
+    #img_name = "." + img_name
     #img = cv.imread(str(img_name), 1)
+    img =  Image.open(str(img_name))
     #cv.imshow("Gioconda", img)
     #window initialization
     window = tkinter.Tk()
@@ -47,8 +48,9 @@ def createForm(img_name, width, height, XPOS, YPOS, data):
     canvas.pack()
          
     #PhotoImage(file = img_name)
-    print(img_name)
-    img = tkinter.PhotoImage(master=canvas, file=img_name, name= nome)    #capire perchè il percorso è cannato.
+    img = ImageTk.PhotoImage(img)
+    #ph = tkinter.PhotoImage(img)
+    #img = tkinter.PhotoImage(master=canvas, file=img_name, name= nome)    #capire perchè il percorso è cannato.
     canvas.create_image(20,20, anchor=tkinter.NW, image=img)
 
     #I will insert the table here

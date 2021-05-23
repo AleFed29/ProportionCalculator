@@ -3,6 +3,7 @@ from modules.proportion_calculator import *
 from modules.frontend_interface import *
 
 Gioconda = "./assets/Gioconda.jpg"
+Elio = "./assets/Elio.jpg"
 SalvatorMundi = "./assets/SalvatorMundi.jpg"
 DamaconErmellino = "./assets/DamaConErmellino.jpg"
 width = 700
@@ -29,6 +30,9 @@ if __name__ == "__main__":
     elif scelta == 3:
         data_DamaconErmellino = CreateTableData(DamaconErmellino, 30)
         createForm(DamaconErmellino, width, height, XPOS, YPOS, data_DamaconErmellino)
+    elif scelta == 4:
+        data_Elio = CreateTableData(Elio, 90)
+        createForm(Elio, width, height, XPOS, YPOS, data_Elio)    
     else:
         print("Digitazione errata Data fake")
         createForm(Gioconda, width, height, XPOS, YPOS, data_fake)

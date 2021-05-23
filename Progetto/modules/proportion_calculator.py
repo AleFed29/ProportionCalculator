@@ -316,7 +316,6 @@ def CreateTableData(img_name,KEYVAL):
         [2, "Trapezoids",trapezoids[0], trapezoids[1],round(trapezoids[0]*100/area,2), time_trap, time_trap*trapezoids[1]],
         [3, "Parabolas",parabolas[0], parabolas[1],round(parabolas[0]*100/area,2), time_par, time_par*parabolas[1]]
     ]
-    print(data)
     return data
     #it takes the function -> three methods, data collected with datetime
 

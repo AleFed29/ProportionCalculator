@@ -23,7 +23,7 @@ def threshold(img_name,keyval):
         ret, threshold_img = cv2.threshold(img, keyval, 255, cv2.THRESH_BINARY)
         threshold_img  = cv2.erode(threshold_img , None, iterations=2)
 
-    elif mainname == "Gioconda":
+    elif mainname == "Gioconda" or mainname == "Elio":
         threshold_img = cv2.rectangle(img, (0,200), (100,600), (255,255,255), -1) #fill with a white rectangle to have good threshold
         threshold_img = cv2.rectangle(threshold_img, (0,200), (200,450), (255,255,255), -1) #fill with a white rectangle to have good threshold
         threshold_img = cv2.rectangle(threshold_img, (525,400), (680,450), (255,255,255), -1)
