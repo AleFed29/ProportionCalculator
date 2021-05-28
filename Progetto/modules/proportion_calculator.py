@@ -266,7 +266,7 @@ def CreateTableData(img_name,KEYVAL):
     n_parabolas = int(n_trapezoids/5)
 
 
-    err = 0.01 #max error
+    #err = 0.01 #max error -> not possible to execute so.
     print("Inizio")
     time_s = datetime.now()
     #A1 = TestRectangles(FUNCTION_1,err) it requires a supercomputer, having an error < ...

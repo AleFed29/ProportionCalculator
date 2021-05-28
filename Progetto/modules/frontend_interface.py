@@ -18,11 +18,7 @@ def table(frame, data):
             
 
 def createForm(img_name, width, height, XPOS, YPOS, data):
-    #getting the image
-    #img_name = "." + img_name
-    #img = cv.imread(str(img_name), 1)
-    img =  Image.open(str(img_name))
-    #cv.imshow("Gioconda", img)
+    img =  Image.open(str(img_name)) #not getting image with opencv because 
     #window initialization
     window = tkinter.Tk()
     #elements in the form title and image.
@@ -47,20 +43,13 @@ def createForm(img_name, width, height, XPOS, YPOS, data):
     canvas = tkinter.Canvas(frame_for_image, width = 432, height = 700)      
     canvas.pack()
          
-    #PhotoImage(file = img_name)
     img = ImageTk.PhotoImage(img)
-    #ph = tkinter.PhotoImage(img)
-    #img = tkinter.PhotoImage(master=canvas, file=img_name, name= nome)    #capire perchè il percorso è cannato.
     canvas.create_image(20,20, anchor=tkinter.NW, image=img)
 
     #I will insert the table here
     frame_for_table = tkinter.Frame(frame, bg='white')
     frame_for_table.place(relx = 0, rely = 3/4, relwidth = 1,relheight = 1/4)
     table(frame_for_table, data)
-    
-    #button = tkinter.Button(frame, text = "Execute Calculation", bg = "white", fg = "blue")
-    #button.pack(side="left", relx = 1/12)
-    #button.place
     
     
     #window: last settings

@@ -36,10 +36,5 @@ if __name__ == "__main__":
     else:
         print("Digitazione errata Data fake")
         createForm(Gioconda, width, height, XPOS, YPOS, data_fake)
-     #then try to call data table creation in createForm, using less parameters
     os.system("PAUSE")    
-    #call threshold and erosion 
-    #Process("Gioconda.jpg",width, height, XPOS, YPOS, data_fake)
-    #Process("SalvatorMundi.jpg",width, height, XPOS, YPOS, data_fake)
-    #Process("DamaConErmellino.jpg",width, height, XPOS, YPOS, data_fake)
     
